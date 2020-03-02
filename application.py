@@ -57,19 +57,22 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-  en_text = base64.b64encode(event.message.text)
-  #request = PubRequest()
-  #request.set_accept_format('json')
-  #request.set_TopicFullName(ALICLOUD_IOT_TOPIC)
-  #request.set_MessageContent(en_text)
-  #request.set_ProductKey(ALICLOUD_IOT_PRODUCTKEY)
-  #request.set_Qos("0")
-  #client.do_action_with_exception(request)
+  message = event.message.text
+  message_bytes = message.encode('ascii')
+  base64_bytes = base64.b64encode(message_bytes)
+  base64_message = base64_bytes.decode('ascii')
+  request = PubRequest()
+  request.set_accept_format('json')
+  request.set_TopicFullName(ALICLOUD_IOT_TOPIC)
+  request.set_MessageContent(base64_message)
+  request.set_ProductKey(ALICLOUD_IOT_PRODUCTKEY)
+  request.set_Qos("0")
+  client.do_action_with_exception(request)
   #result = str(response)
   
   line_bot_api.reply_message(
     event.reply_token,
-    TextSendMessage(text=en_text)
+    TextSendMessage(text=base64_message)
   )
 
 if __name__ == "__main__":
