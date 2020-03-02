@@ -57,10 +57,12 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+  
   message = event.message.text
-  message_bytes = message.encode('ascii')
+  message_bytes = message.encode('utf-8')
   base64_bytes = base64.b64encode(message_bytes)
-  base64_message = base64_bytes.decode('ascii')
+  base64_message = base64_bytes.decode('utf-8')
+
   request = PubRequest()
   request.set_accept_format('json')
   request.set_TopicFullName(ALICLOUD_IOT_TOPIC)
