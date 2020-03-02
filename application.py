@@ -71,15 +71,20 @@ def handle_message(event):
   request.set_Qos("0")
   client.do_action_with_exception(request)
   #result = str(response)
-  if message == 1:
+  if message == "1":
     line_bot_api.reply_message(
       event.reply_token,
       TextSendMessage(text="電気をつけました")
     )
-  elif message == 0:
+  elif message == "0":
     line_bot_api.reply_message(
       event.reply_token,
       TextSendMessage(text="電気を消しました")
+    )
+  else:
+    line_bot_api.reply_message(
+      event.reply_token,
+      TextSendMessage(text=message)
     )
 
 if __name__ == "__main__":
